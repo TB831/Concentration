@@ -6,7 +6,6 @@ const NavBar = ({ winCounts }) => {
       <a className="navbar-brand" href="/">
         Concentration Game!
         <button className="btn btn-primary btn-sm m-2">New Game</button>
-        <span className="badge badge-pill badge-secondary m-2">{winCounts}</span>
       </a>
     </nav>
   );
