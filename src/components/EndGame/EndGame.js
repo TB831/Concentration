@@ -1,6 +1,6 @@
 import React from "react";
 
-const EndGame = ({}) => {
+const EndGame = () => {
   return (
     <div className="jumbotron tc">
       <h2>🎉 👏 🎊 You Won! 🎊 👏 🎉</h2>

@@ -7,7 +7,7 @@ import "./App.css";
 const initialState = {
   cardRevealStates: [],
   cardsArray: [],
-  revealedCards: [],
+  foundMatchedCards: [],
   gameOver: false,
 };
 
@@ -29,8 +29,6 @@ class App extends Component {
   handleClick = (index) => {
     const newRevealCardStates = this.state.cardRevealStates;
     newRevealCardStates[index] = true
-    console.log(newRevealCardStates);
-    console.log(this.state.cardsArray[index]);
     this.setState({cardRevealStates: newRevealCardStates});
     this.checkForMatch();
   }
@@ -41,7 +39,7 @@ class App extends Component {
       if (this.isMatch(revealedCards)) {
         this.removeCards(revealedCards);
       }
-      this.hideCards()
+      this.hideCards();
     }
     this.checkForWin();
   }
@@ -52,8 +50,10 @@ class App extends Component {
 
   removeCards = (matchedCards) => {
     const cards = this.state.cardsArray;
-    const myArray = cards.filter(card => {return !matchedCards.includes(card)});
-    this.setState({cardsArray: myArray});
+    const foundCards = this.state.foundMatchedCards;
+    foundCards.push(matchedCards);
+    const remainingCards = cards.filter(card => {return !matchedCards.includes(card)});
+    this.setState({cardsArray: remainingCards, foundMatchedCards: foundCards});
   }
 
   hideCards(onSetState = () => {}) {
@@ -65,12 +65,11 @@ class App extends Component {
   }
 
   checkForWin = () => {
-    const remainingCards = this.state.cardsArray;
-    let wins = this.state.winCounts;
-    if (remainingCards === 0) {
-      wins++;
-      this.setState({ gameOver: true, winCounts: wins });
+    const remainingCards = this.state.foundMatchedCards.length;
+    if (remainingCards === 26) {
+      this.setState({ gameOver: true });
     }
+    console.log(remainingCards);
   }
 
   render() {
@@ -83,18 +82,8 @@ class App extends Component {
       );
     }
     else {
-      return (
-        <EndGame />
-      )
+      return <EndGame />;
     }
-  }
-
-  startNewGame = () => {
-    const { gamesPlayed } = this.state;
-    this.setState({
-      cardRevealStates: new Array(this.cards.length).fill(false),
-      gamesPlayed: gamesPlayed + 1,
-    });
   }
 
   renderCards = () => {
