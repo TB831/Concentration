@@ -49,11 +49,13 @@ class App extends Component {
   }
 
   removeCards = (matchedCards) => {
-    const cards = this.state.cardsArray;
-    const foundCards = this.state.foundMatchedCards;
-    foundCards.push(matchedCards);
-    const remainingCards = cards.filter(card => {return !matchedCards.includes(card)});
-    this.setState({cardsArray: remainingCards, foundMatchedCards: foundCards});
+    this.hideCards(() => {
+      const cards = this.state.cardsArray;
+      const foundCards = this.state.foundMatchedCards;
+      foundCards.push(matchedCards);
+      const remainingCards = cards.filter(card => {return !matchedCards.includes(card)});
+      this.setState({cardsArray: remainingCards, foundMatchedCards: foundCards});
+    })
   }
 
   hideCards(onSetState = () => {}) {
